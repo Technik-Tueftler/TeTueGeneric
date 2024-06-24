@@ -3,12 +3,9 @@
 
 from __future__ import annotations
 import requests
-import watcher
+from . import watcher
 
-try:
-    from constants import REQUEST_TIMEOUT
-except ModuleNotFoundError as _:
-    REQUEST_TIMEOUT = 20
+REQUEST_TIMEOUT_GENERIC = 20
 
 
 async def generic_http_request(
@@ -25,7 +22,7 @@ async def generic_http_request(
         requests.Response: Return value from http request or in failure case a None
     """
     try:
-        return requests.get(url, headers=header, timeout=REQUEST_TIMEOUT)
+        return requests.get(url, headers=header, timeout=REQUEST_TIMEOUT_GENERIC)
     except requests.exceptions.HTTPError as err:
         if logger is not None:
             watcher.logger.error(f"HTTP error occurred: {err}")
