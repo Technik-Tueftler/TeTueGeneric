@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 import requests
-import watcher
+from . import watcher
 
 try:
     from constants import REQUEST_TIMEOUT
