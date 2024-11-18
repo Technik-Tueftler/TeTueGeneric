@@ -1,15 +1,9 @@
-"""Implement generic function for reuse in other projects
+"""Implement generic request function with own logging and return functionality
 """
-
 from __future__ import annotations
 import requests
 from . import watcher
-
-try:
-    from constants import REQUEST_TIMEOUT
-except ModuleNotFoundError as _:
-    REQUEST_TIMEOUT = 20
-
+from . import REQUEST_TIMEOUT
 
 async def generic_http_request(
     url: str, header: dict, logger: watcher.loguru.Logger = None

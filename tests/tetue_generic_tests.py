@@ -1,5 +1,6 @@
 import sys
 import unittest
+
 sys.path.append('..')
 
 
@@ -15,8 +16,8 @@ class SrcTestSuite(unittest.TestCase):
 class GenericTestSuite(unittest.TestCase):
     """Generic test cases."""
     def test_that_riddle_is_solved(self):
-        string = src.generic_func()
-        self.assertEqual("generic", string)
+        request_timeout = src.REQUEST_TIMEOUT
+        self.assertEqual(30, request_timeout)
 
 
 if __name__ == '__main__':
