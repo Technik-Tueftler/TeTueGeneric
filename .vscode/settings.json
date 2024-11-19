@@ -1,5 +1,5 @@
 {
-    "code-runner.cwd": "${workspaceFolder}/source",
-    "terminal.integrated.cwd": "${workspaceFolder}/source",
+    "code-runner.cwd": "${workspaceFolder}/src",
+    "terminal.integrated.cwd": "${workspaceFolder}/src",
     "code-runner.fileDirectoryAsCwd": true
 }

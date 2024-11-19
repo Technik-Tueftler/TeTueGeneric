@@ -1,11 +1,9 @@
-"""Implement generic function for reuse in other projects
+"""Implement generic request function with own logging and return functionality
 """
-
 from __future__ import annotations
 import requests
 from . import watcher
-
-REQUEST_TIMEOUT_GENERIC = 20
+from . import REQUEST_TIMEOUT
 
 
 async def generic_http_request(
@@ -22,7 +20,7 @@ async def generic_http_request(
         requests.Response: Return value from http request or in failure case a None
     """
     try:
-        return requests.get(url, headers=header, timeout=REQUEST_TIMEOUT_GENERIC)
+        return requests.get(url, headers=header, timeout=REQUEST_TIMEOUT)
     except requests.exceptions.HTTPError as err:
         if logger is not None:
             watcher.logger.error(f"HTTP error occurred: {err}")
