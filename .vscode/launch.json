@@ -1,14 +1,15 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Main",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/source/main.py",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}/source",
+            "cwd": "${workspaceFolder}",
             "envFile": "D:/Workspace/git/TeTueSecrets/TwitchHashtagBot/.env.development"
         },
         {
@@ -18,7 +19,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}/source",
+            "cwd": "${workspaceFolder}",
             "envFile": "D:/Workspace/git/TeTueSecrets/TwitchHashtagBot/.env.development"
         }
     ]

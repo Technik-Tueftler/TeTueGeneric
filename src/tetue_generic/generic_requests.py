@@ -5,6 +5,7 @@ import requests
 from . import watcher
 from . import REQUEST_TIMEOUT
 
+
 async def generic_http_request(
     url: str, header: dict, logger: watcher.loguru.Logger = None
 ) -> requests.Response:
