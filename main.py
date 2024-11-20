@@ -1,3 +1,5 @@
+"""main
+"""
 import src
 
 src.watcher.init_logging("ERROR")

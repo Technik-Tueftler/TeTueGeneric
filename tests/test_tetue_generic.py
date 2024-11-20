@@ -1,3 +1,5 @@
+"""Test
+"""
 import sys
 import pytest
 from asyncmock import AsyncMock
@@ -7,6 +9,11 @@ sys.path.append('..')
 
 @pytest.mark.asyncio
 async def test_generic_http_request_success(mocker):
+    """lala
+
+    Args:
+        mocker (_type_): _description_
+    """
     mock_response = AsyncMock()
     mock_response.status_code = 200
     mock_response.text = "Success"
@@ -23,6 +30,12 @@ async def test_generic_http_request_success(mocker):
 
 @pytest.mark.asyncio
 async def test_generic_requests_http_error(mocker, capsys):
+    """lala 2
+
+    Args:
+        mocker (_type_): _description_
+        capsys (_type_): _description_
+    """
     mocker.patch("requests.get", side_effect=src.requests.exceptions.HTTPError)
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}
@@ -36,6 +49,12 @@ async def test_generic_requests_http_error(mocker, capsys):
 
 @pytest.mark.asyncio
 async def test_generic_requests_connect_timeout(mocker, capsys):
+    """lala 3
+
+    Args:
+        mocker (_type_): _description_
+        capsys (_type_): _description_
+    """
     mocker.patch("requests.get", side_effect=src.requests.exceptions.ConnectTimeout)
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}
@@ -48,6 +67,12 @@ async def test_generic_requests_connect_timeout(mocker, capsys):
 
 @pytest.mark.asyncio
 async def test_generic_requests_connection_error(mocker, capsys):
+    """lala 4
+
+    Args:
+        mocker (_type_): _description_
+        capsys (_type_): _description_
+    """
     mocker.patch("requests.get", side_effect=src.requests.exceptions.ConnectionError)
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}

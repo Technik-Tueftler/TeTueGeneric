@@ -1,3 +1,5 @@
+"""Generic init
+"""
 REQUEST_TIMEOUT = 20
 LOG_FILE_PATH = "files/henCommander.log"
 try:
