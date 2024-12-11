@@ -23,13 +23,17 @@ release = __version__
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon', # docstrings like google and NumPy
-    # sphinx.ext.intersphinx, # for intersphinx_mapping
+    'sphinx.ext.intersphinx', # for intersphinx_mapping
     'sphinx_copybutton',
     'sphinx_toolbox.more_autodoc.typehints', # use type hints
     'myst_parser', # for Markdown documentation
 ]
 
-# intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3', None)
+    }
+
+autodoc_member_order = 'bysource'
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
