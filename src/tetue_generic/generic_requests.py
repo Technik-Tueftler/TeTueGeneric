@@ -14,7 +14,7 @@ async def generic_http_request(
     Args:
         url (str): The URL to send the request
         header (dict): The headers to include in the request
-        logger (watcher.loguru.Logger): Logger for storing the error
+        logger (loguru.logger): Logger for storing the error
 
     Returns:
         requests.Response: Return value from http request or in failure case a None
