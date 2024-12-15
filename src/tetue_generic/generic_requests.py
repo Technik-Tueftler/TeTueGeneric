@@ -14,7 +14,7 @@ async def generic_http_request(
     Args:
         url (str): The URL to send the request
         header (dict): The headers to include in the request
-        logger (_type_): Logger for storing the error
+        logger (loguru.logger): Logger for storing the error
 
     Returns:
         requests.Response: Return value from http request or in failure case a None
@@ -39,3 +39,21 @@ async def generic_http_request(
         else:
             print(f"Connection error occurred: {err}")
         return None
+
+
+async def generic_http_reques2(a: int, b: int):
+    """_summary_
+
+    Args:
+        a (int): _description_
+        b (int): _description_
+
+    Raises:
+        ValueError: _description_
+
+    Returns:
+        _type_: _description_
+    """
+    if a < b:
+        raise ValueError("Fehler")
+    return a-b
