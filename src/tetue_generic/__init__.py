@@ -10,7 +10,7 @@ Note:
 """
 
 REQUEST_TIMEOUT = 20
-LOG_FILE_PATH = "files/henCommander.log"
+LOG_FILE_PATH = "files/app.log"
 try:
     from ..constants import REQUEST_TIMEOUT
 except (ModuleNotFoundError, ImportError) as _:

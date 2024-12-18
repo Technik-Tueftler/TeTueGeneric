@@ -2,8 +2,16 @@
 """
 from __future__ import annotations
 import requests
+from pydantic import BaseModel
 from . import watcher
 from . import REQUEST_TIMEOUT
+
+
+class GenReqConfiguration(BaseModel):
+    """
+    Configuration settings for generic_requests
+    """
+    request_timeout: int
 
 
 async def generic_http_request(

@@ -6,6 +6,7 @@ and enables
 - The initialization of submodules and packages.
 - The import and provision of frequently used functions and constants.
 """
+from .configuration import *
 from .tetue_generic.generic_requests import *
 
 __version__ = "v0.1.0"
