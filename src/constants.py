@@ -5,4 +5,4 @@ to enhance maintainability and consistency.
 #: Default time to about requests
 REQUEST_TIMEOUT: int = 30
 #: Default path for logging file
-LOG_FILE_PATH: str = "files/henCommander.log"
+LOG_FILE_PATH: str = "files/app.log"
