@@ -1,18 +1,19 @@
-"""main
 """
+Main function for starting application
+"""
+
 import src
 
 
-def main():
+def main() -> None:
     """
-    temp
+    Scheduling function for regular call.
     """
-    src.watcher.init_logging("ERROR")
-    src.watcher.logger.error("Test")
     config = src.Configuration()
+    src.set_configurations(config)
+    src.watcher.init_logging(config.watcher.log_level)
+    src.watcher.logger.info(f"Start application in version: {src.__version__}")
 
-    print(config.gen_req.request_timeout)
-    print(config.db.ip)
 
 if __name__ == "__main__":
     main()
