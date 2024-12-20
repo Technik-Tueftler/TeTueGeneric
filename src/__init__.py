@@ -11,3 +11,4 @@ from .tetue_generic.generic_requests import *
 from .tetue_generic.watcher import *
 
 __version__ = "v0.1.0"
+__repository__ = "https://github.com/Technik-Tueftler/TeTueGeneric"
