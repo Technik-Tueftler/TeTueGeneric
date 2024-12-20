@@ -3,4 +3,4 @@ watcher
 
 .. automodule:: src.tetue_generic.watcher
     :members:
-    :undoc-members:
+    :exclude-members: WatcherConfiguration

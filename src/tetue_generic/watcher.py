@@ -19,8 +19,8 @@ watcher_settings = WatcherConfiguration()
 
 def init_generic_watcher(log_file_path: FilePath) -> None:
     """
-    Locale initialization for the transfer of default values 
-    for the generic watcher functions 
+    Locale initialization for the transfer of default values
+    for the generic watcher functions
 
     Args:
         log_file_path (FilePath): Existing path with file

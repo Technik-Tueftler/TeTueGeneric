@@ -8,11 +8,11 @@ The following illustration shows the structure of the project:
 
    Application
     ├── src
-    ├   ├── __init__.py
-    ├   ├── db.py
-    ├   └── tetue_generic
-    ├       ├── __init__.py
-    ├       └── watcher.py
+    │   ├── __init__.py
+    │   ├── db.py
+    │   └── tetue_generic
+    │       ├── __init__.py
+    │       └── watcher.py
     └── main.py
 
 Generic
