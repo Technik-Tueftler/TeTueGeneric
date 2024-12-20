@@ -5,4 +5,4 @@ App
    :maxdepth: 2
    :caption: Contents:
 
-   constants
+   .. New modules
