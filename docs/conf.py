@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath("../"))
 
-from src import __version__
+from src import __version__, __repository__
 
 project = 'TeTueGeneric'
 copyright = '2024, Technik Tueftler'
@@ -40,4 +40,26 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'pydata_sphinx_theme'
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": __repository__,
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Twitch",
+            "url": "https://www.twitch.tv/technik_tueftlers",
+            "icon": "fa-brands fa-twitch",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Youtube",
+            "url": "https://www.youtube.com/@technik_tueftler",
+            "icon": "fa-brands fa-youtube",
+            "type": "fontawesome",
+        },
+    ],
+}
 html_static_path = ['_static']
