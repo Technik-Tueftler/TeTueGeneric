@@ -8,7 +8,7 @@ TeTue Generic
 
 .. toctree::
    :maxdepth: 2
-   :caption: Expand
+   :caption: User Guide
 
    module
    configuration
@@ -18,5 +18,6 @@ TeTue Generic
    :maxdepth: 2
    :caption: Contents
 
+   default_env_var
    generic_requests
    watcher
