@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 import requests
-from pydantic import BaseModel
+from pydantic import BaseModel, PositiveInt
 from . import watcher
 
 
@@ -12,7 +12,7 @@ class GenReqConfiguration(BaseModel):
     Configuration settings for generic_requests
     """
 
-    request_timeout: int = 10
+    request_timeout: PositiveInt = 10
 
 
 gen_req_settings = GenReqConfiguration()
@@ -26,6 +26,8 @@ def init_generic_requests(request_timeout: int) -> None:
     Args:
         request_timeout (int): Time until a request is canceled 
     """
+    if request_timeout <= 0:
+        raise ValueError("request_timeout must be greater than 0")
     gen_req_settings.request_timeout = request_timeout
 
 

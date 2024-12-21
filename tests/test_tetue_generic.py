@@ -6,6 +6,7 @@ import sys
 import pytest
 from asyncmock import AsyncMock
 import src
+import src.tetue_generic
 
 sys.path.append('..')
 
@@ -145,3 +146,38 @@ async def test_generic_requests_connection_error(mocker, capsys):
     captured = capsys.readouterr()
     assert response is None
     assert captured.out == "Connection error occurred: \n"
+
+def test_gen_req_configuration_default():
+    """
+    Verifies the default value for request timeout of `GenReqConfiguration`.
+
+    Steps:
+    1. Instantiate `GenReqConfiguration`.
+    2. Assert that `request_timeout` equals 10.
+    """
+    config = src.GenReqConfiguration()
+    assert config.request_timeout == 10
+
+def test_init_generic_requests_changes_timeout():
+    """
+    Validates whether `init_generic_requests` correctly updates the timeout value.
+
+    Steps:
+    1. Set a new timeout value.
+    2. Call `init_generic_requests` with the new value.
+    3. Assert that the `request_timeout` in `gen_req_settings` is updated.
+    """
+    new_timeout = 20
+    src.init_generic_requests(new_timeout)
+    assert src.gen_req_settings.request_timeout == new_timeout
+
+def test_init_generic_requests_invalid_value():
+    """
+    Ensures `init_generic_requests` raises an error for invalid input.
+
+    Steps:
+    1. Pass an invalid timeout value.
+    2. Assert that a `ValueError` is raised.
+    """
+    with pytest.raises(ValueError):
+        src.init_generic_requests(-1)
