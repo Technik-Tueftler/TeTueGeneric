@@ -181,3 +181,27 @@ def test_init_generic_requests_invalid_value():
     """
     with pytest.raises(ValueError):
         src.init_generic_requests(-1)
+
+def test_watcher_configuration_default():
+    """
+    Verifies the default value for file path of `WatcherConfiguration`.
+
+    Steps:
+    1. Instantiate `WatcherConfiguration`.
+    2. Assert that `log_file_path` equals files/app.log.
+    """
+    config = src.WatcherConfiguration()
+    assert config.log_file_path == "files/app.log"
+
+def test_init_generic_watcher_changes_file_path():
+    """
+    Validates whether `init_generic_watcher` correctly updates the file path.
+
+    Steps:
+    1. Set a new file path.
+    2. Call `init_generic_watcher` with the new value.
+    3. Assert that the `log_file_path` in `watcher_settings` is updated.
+    """
+    new_file_path = "test/app2.log"
+    src.init_generic_watcher(new_file_path)
+    assert src.watcher_settings.log_file_path == "test/app2.log"
