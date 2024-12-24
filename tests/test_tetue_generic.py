@@ -6,7 +6,6 @@ import sys
 import pytest
 from asyncmock import AsyncMock
 import src
-import src.tetue_generic
 
 sys.path.append('..')
 
