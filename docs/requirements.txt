@@ -4,3 +4,4 @@ pydata-sphinx-theme
 sphinx-copybutton
 sphinx-toolbox
 myst-parser
+sphinx-mermaid
