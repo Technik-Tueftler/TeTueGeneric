@@ -58,6 +58,47 @@ If a configuration is required for the new generic parts, the following must be 
 Application
 -----------
 
-.. note::
+The db module with new functions should be added to the app folder.
+If a configuration is required for the new db parts, the following must be created.
 
-   Still being created
+1. Create a configuration class in *db.py*
+
+.. code-block:: python
+
+    from pydantic import BaseModel, IPvAnyAddress
+
+    class DbConfiguration(BaseModel):
+        """
+        Configuration settings for database handler
+        """
+        ip: IPvAnyAddress
+        user: str
+        active: bool = True
+
+3. Add new configuration variables to *.env* with nested delimiter
+
+.. code-block:: rst
+
+    TT_DB__IP=192.168.0.1
+    TT_DB__USER=TeTue
+
+Here it's different to the generic parts, as these are application-specific. Therefore, the 
+variables that are optional (e.g. active) should be assigned a default value in DbConfiguration. 
+All required (e.g. ip and user) variables from user must be specified in the *.env*.
+
+Primary
+-----------
+
+If you need settings that are once again superordinate in the project, i.e. are not directly assigned 
+to a module (user and name), these are specified and verified directly in the configuration class.
+
+.. code-block:: python
+
+    class Configuration(BaseSettings):
+        model_config = SettingsConfigDict(env_prefix='TT_', env_nested_delimiter='__')
+
+        user: str
+        name: str = "TeTue"
+        gen_req: GenReqConfiguration
+        watcher: WatcherConfiguration
+        db: DbConfiguration

@@ -21,6 +21,7 @@ extensions = [
     'sphinx_copybutton', # add copy button in code view
     'sphinx_toolbox.more_autodoc.typehints', # use type hints
     'myst_parser', # for Markdown documentation
+    'sphinxmermaid', # for Mermaid diagrams
 ]
 
 intersphinx_mapping = {
@@ -34,6 +35,17 @@ autodoc_member_order = 'bysource'
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+sphinxmermaid_mermaid_init = {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#4CAF50',
+    'primaryTextColor': '#FFFFFF',
+    'primaryBorderColor': '#757575',
+    'lineColor': '#B0BEC5',
+    'secondaryColor': '#2196F3',
+    'tertiaryColor': '#2196F3'
+  }
+}
 
 
 # -- Options for HTML output -------------------------------------------------

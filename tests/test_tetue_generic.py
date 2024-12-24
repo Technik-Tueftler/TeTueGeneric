@@ -145,3 +145,62 @@ async def test_generic_requests_connection_error(mocker, capsys):
     captured = capsys.readouterr()
     assert response is None
     assert captured.out == "Connection error occurred: \n"
+
+def test_gen_req_configuration_default():
+    """
+    Verifies the default value for request timeout of `GenReqConfiguration`.
+
+    Steps:
+    1. Instantiate `GenReqConfiguration`.
+    2. Assert that `request_timeout` equals 10.
+    """
+    config = src.GenReqConfiguration()
+    assert config.request_timeout == 10
+
+def test_init_generic_requests_changes_timeout():
+    """
+    Validates whether `init_generic_requests` correctly updates the timeout value.
+
+    Steps:
+    1. Set a new timeout value.
+    2. Call `init_generic_requests` with the new value.
+    3. Assert that the `request_timeout` in `gen_req_settings` is updated.
+    """
+    new_timeout = 20
+    src.init_generic_requests(new_timeout)
+    assert src.gen_req_settings.request_timeout == new_timeout
+
+def test_init_generic_requests_invalid_value():
+    """
+    Ensures `init_generic_requests` raises an error for invalid input.
+
+    Steps:
+    1. Pass an invalid timeout value.
+    2. Assert that a `ValueError` is raised.
+    """
+    with pytest.raises(ValueError):
+        src.init_generic_requests(-1)
+
+def test_watcher_configuration_default():
+    """
+    Verifies the default value for file path of `WatcherConfiguration`.
+
+    Steps:
+    1. Instantiate `WatcherConfiguration`.
+    2. Assert that `log_file_path` equals files/app.log.
+    """
+    config = src.WatcherConfiguration()
+    assert config.log_file_path == "files/app.log"
+
+def test_init_generic_watcher_changes_file_path():
+    """
+    Validates whether `init_generic_watcher` correctly updates the file path.
+
+    Steps:
+    1. Set a new file path.
+    2. Call `init_generic_watcher` with the new value.
+    3. Assert that the `log_file_path` in `watcher_settings` is updated.
+    """
+    new_file_path = "test/app2.log"
+    src.init_generic_watcher(new_file_path)
+    assert src.watcher_settings.log_file_path == "test/app2.log"
