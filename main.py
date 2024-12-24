@@ -13,6 +13,8 @@ def main() -> None:
     src.set_configurations(config)
     src.watcher.init_logging(config.watcher.log_level)
     src.watcher.logger.info(f"Start application in version: {src.__version__}")
+    src.helli()
+    print(config)
 
 
 if __name__ == "__main__":

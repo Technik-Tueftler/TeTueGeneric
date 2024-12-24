@@ -31,6 +31,18 @@ The watcher module with new functions should be added to the generic folder.
 Application
 -----------
 
-.. note::
+The db module with new functions should be added to the app folder.
 
-   Still being created
+1. Add new file *db.py* in **src** directory
+2. Add import for db in *__init__.py* in **src** directory
+
+.. code-block:: python
+
+    from .db import *
+
+3. Now the functions in *db.py* are available in *main.py* with
+
+.. code-block:: python
+
+    import src
+    src.new_func_from_db()

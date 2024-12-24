@@ -7,6 +7,7 @@ and enables
 - The import and provision of frequently used functions and constants.
 """
 from .configuration import *
+from .db import *
 from .tetue_generic.generic_requests import *
 from .tetue_generic.watcher import *
 
