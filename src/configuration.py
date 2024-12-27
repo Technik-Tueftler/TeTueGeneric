@@ -21,8 +21,6 @@ class Configuration(BaseSettings):
     """
     model_config = SettingsConfigDict(env_prefix='TT_', env_nested_delimiter='__')
 
-    user: str
-    vorname: str = "JoJo"
     gen_req: GenReqConfiguration
     watcher: WatcherConfiguration
     db: DbConfiguration
