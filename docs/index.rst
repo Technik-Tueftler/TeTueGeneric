@@ -7,3 +7,4 @@
 
    src/index
    generic/index
+   help/index
