@@ -1,37 +1,64 @@
 """
-This file contains unit tests for verifying the functionality of 
+This file contains unit tests for verifying the functionality of
 generic utilities and functions within package tetue_generic.
 """
+
 import sys
+import io
+import requests
 import pytest
 from asyncmock import AsyncMock
+from pydantic_settings import BaseSettings
+from loguru import logger
 import src
 
-sys.path.append('..')
+sys.path.append("..")
+
+
+class GenReqConfiguration(BaseSettings):
+    request_timeout: int = 30
+
+
+class WatcherConfiguration(BaseSettings):
+    log_level: str = "INFO"
+    log_file_path: str = "files/app.log"
+
+
+class Configuration(BaseSettings):
+    gen_req: GenReqConfiguration
+    watcher: WatcherConfiguration
+
+
+config = Configuration(gen_req=GenReqConfiguration(), watcher=WatcherConfiguration())
+
+
+@pytest.fixture(name="loguru_caplog")
+def fct_loguru_caplog():
+    logger.remove()
+    log_output = io.StringIO()
+    logger.add(log_output, colorize=True, level="DEBUG")
+    yield log_output
+    logger.remove()
+
 
 @pytest.mark.asyncio
 async def test_generic_http_request_success(mocker):
     """
-    Tests the successful execution of a generic HTTP request.
+    Tests the `generic_http_request` function to ensure it handles a successful 
+    HTTP request correctly.
 
-    This test verifies that the `generic_http_request` function behaves correctly
-    when an HTTP request succeeds. Using mocking, it simulates the behavior of an 
-    HTTP GET request to ensure that the function:
-    - Returns a valid response.
-    - Correctly processes the response's status code and text.
+    This test:
+    - Mocks the `requests.get` method to simulate a successful HTTP response with status code 200.
+    - Verifies that the function returns a response object when the request is successful.
+    - Checks that the response contains the expected status code and text.
 
     Args:
-        mocker: A fixture used to mock modules and functions, 
-        applied here to patch `src.requests.get`.
+        mocker (pytest.MockFixture): Pytest mocker object for mocking functions and methods.
 
-    Test Steps:
-    1. Create a mock HTTP response with a status code of 200 and the text "Success."
-    2. Patch the `src.requests.get` function to return the mock response.
-    3. Call the `generic_http_request` function with a sample URL and headers.
-    4. Validate the returned response to ensure that:
-        - It is not `None`.
-        - It contains a status code of 200.
-        - It includes the text "Success."
+    Assertions:
+        - The function's return value is not `None`.
+        - The returned response has a status code of 200.
+        - The returned response contains the expected text "Success".
     """
     mock_response = AsyncMock()
     mock_response.status_code = 200
@@ -40,7 +67,7 @@ async def test_generic_http_request_success(mocker):
 
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}
-    response = await src.generic_http_request(url, header)
+    response = await src.generic_http_request(url, header, config)
 
     assert response is not None
     assert response.status_code == 200
@@ -48,159 +75,90 @@ async def test_generic_http_request_success(mocker):
 
 
 @pytest.mark.asyncio
-async def test_generic_requests_http_error(mocker, capsys):
+async def test_generic_requests_connect_timeout(mocker, loguru_caplog):
     """
-    Tests the behavior of `generic_http_request` when an HTTP error occurs.
+    Tests the `generic_http_request` function to ensure it handles a connection timeout correctly.
 
-    This test ensures that the `generic_http_request` function handles HTTP errors gracefully by:
-    - Returning `None` when an HTTP error is encountered.
-    - Logging the appropriate error message to standard output.
+    This test:
+    - Mocks the `requests.get` method to raise a `ConnectTimeout` exception.
+    - Verifies that the function returns `None` when a timeout occurs.
+    - Validates that the expected error message is present in the log output (via Loguru).
 
     Args:
-        mocker: A fixture used to mock modules and functions, 
-        here used to simulate an HTTP error by patching `requests.get`.
-        capsys: A pytest fixture for capturing and inspecting standard output and error streams.
+        mocker (pytest.MockFixture): Pytest mocker object for mocking functions and methods.
+        loguru_caplog (StringIO): Fixture for capturing log outputs from the Loguru logger.
 
-    Test Steps:
-    1. Mock the `requests.get` function to raise an `HTTPError` when called.
-    2. Provide a sample URL and headers to the `generic_http_request` function.
-    3. Verify the following:
-        - The function returns `None`.
-        - The error message "HTTP error occurred: \n" is logged to the standard output.
+    Assertions:
+        - The function's return value is `None`.
+        - The error message "Connection timeout error occurred" is present in the log output.
     """
-
-    mocker.patch("requests.get", side_effect=src.requests.exceptions.HTTPError)
+    # async def test_generic_requests_connect_timeout(mocker, capsys):
+    # src.init_logging(config.watcher) erste Version mit capsys
+    mocker.patch(
+        "requests.get",
+        side_effect=requests.exceptions.ConnectTimeout("Test timeout error"),
+    )
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}
-
-    # with pytest.raises(src.requests.exceptions.HTTPError):
-    response = await src.generic_http_request(url, header)
-    captured = capsys.readouterr()
+    response = await src.generic_http_request(url, header, config)
     assert response is None
-    assert captured.out == "HTTP error occurred: \n"
+    # assert "Connection timeout error occurred" in capsys.readouterr().out
+    assert "Connection timeout error occurred" in loguru_caplog.getvalue()
 
 
 @pytest.mark.asyncio
-async def test_generic_requests_connect_timeout(mocker, capsys):
+async def test_generic_requests_http_error(mocker, loguru_caplog):
     """
-    Tests the behavior of `generic_http_request` when a connection timeout occurs.
+    Tests the `generic_http_request` function to ensure it handles HTTP errors correctly.
 
-    This test ensures that the `generic_http_request` function handles connection timeouts 
-    gracefully by:
-    - Returning `None` when a `ConnectTimeout` exception is raised.
-    - Logging the appropriate timeout error message to standard output.
+    This test:
+    - Mocks the `requests.get` method to raise an `HTTPError` exception.
+    - Verifies that the function returns `None` when an HTTP error occurs.
+    - Validates that the expected error message is present in the log output (via Loguru).
 
     Args:
-        mocker: A fixture used to mock modules and functions, 
-        here used to simulate a connection timeout by patching `requests.get`.
-        capsys: A pytest fixture for capturing and inspecting standard output and error streams.
+        mocker (pytest.MockFixture): Pytest mocker object for mocking functions and methods.
+        loguru_caplog (StringIO): Fixture for capturing log outputs from the Loguru logger.
 
-    Test Steps:
-    1. Mock the `requests.get` function to raise a `ConnectTimeout` exception when called.
-    2. Provide a sample URL and headers to the `generic_http_request` function.
-    3. Verify the following:
-        - The function returns `None`.
-        - The error message "Connection timeout error occurred: \n" 
-        is logged to the standard output.
+    Assertions:
+        - The function's return value is `None`.
+        - The error message "HTTP error occurred" is present in the log output.
     """
-
-    mocker.patch("requests.get", side_effect=src.requests.exceptions.ConnectTimeout)
+    mocker.patch(
+        "requests.get",
+        side_effect=requests.exceptions.HTTPError("Test http error"),
+    )
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}
-
-    response = await src.generic_http_request(url, header)
-    captured = capsys.readouterr()
+    response = await src.generic_http_request(url, header, config)
     assert response is None
-    assert captured.out == "Connection timeout error occurred: \n"
+    assert "HTTP error occurred" in loguru_caplog.getvalue()
 
 
 @pytest.mark.asyncio
-async def test_generic_requests_connection_error(mocker, capsys):
+async def test_generic_requests_connection_error(mocker, loguru_caplog):
     """
-    Tests the behavior of `generic_http_request` when a connection error occurs.
+    Tests the `generic_http_request` function to ensure it handles connection errors correctly.
 
-    This test ensures that the `generic_http_request` function handles 
-    connection errors appropriately by:
-    - Returning `None` when a `ConnectionError` exception is raised.
-    - Logging the correct connection error message to standard output.
+    This test:
+    - Mocks the `requests.get` method to raise a `ConnectionError` exception.
+    - Verifies that the function returns `None` when a connection error occurs.
+    - Validates that the expected error message is present in the log output (via Loguru).
 
     Args:
-        mocker: A fixture used to mock modules and functions, 
-        here used to simulate a connection error by patching `requests.get`.
-        capsys: A pytest fixture for capturing and inspecting standard output and error streams.
+        mocker (pytest.MockFixture): Pytest mocker object for mocking functions and methods.
+        loguru_caplog (StringIO): Fixture for capturing log outputs from the Loguru logger.
 
-    Test Steps:
-    1. Mock the `requests.get` function to raise a `ConnectionError` exception when called.
-    2. Provide a sample URL and headers to the `generic_http_request` function.
-    3. Verify the following:
-        - The function returns `None`.
-        - The error message "Connection error occurred: \n" is logged to the standard output.
+    Assertions:
+        - The function's return value is `None`.
+        - The error message "Connection error occurred" is present in the log output.
     """
-
-    mocker.patch("requests.get", side_effect=src.requests.exceptions.ConnectionError)
+    mocker.patch(
+        "requests.get",
+        side_effect=requests.exceptions.ConnectionError("Test connection error"),
+    )
     url = "https://example.com"
     header = {"Authorization": "Bearer token"}
-
-    response = await src.generic_http_request(url, header)
-    captured = capsys.readouterr()
+    response = await src.generic_http_request(url, header, config)
     assert response is None
-    assert captured.out == "Connection error occurred: \n"
-
-def test_gen_req_configuration_default():
-    """
-    Verifies the default value for request timeout of `GenReqConfiguration`.
-
-    Steps:
-    1. Instantiate `GenReqConfiguration`.
-    2. Assert that `request_timeout` equals 10.
-    """
-    config = src.GenReqConfiguration()
-    assert config.request_timeout == 10
-
-def test_init_generic_requests_changes_timeout():
-    """
-    Validates whether `init_generic_requests` correctly updates the timeout value.
-
-    Steps:
-    1. Set a new timeout value.
-    2. Call `init_generic_requests` with the new value.
-    3. Assert that the `request_timeout` in `gen_req_settings` is updated.
-    """
-    new_timeout = 20
-    src.init_generic_requests(new_timeout)
-    assert src.gen_req_settings.request_timeout == new_timeout
-
-def test_init_generic_requests_invalid_value():
-    """
-    Ensures `init_generic_requests` raises an error for invalid input.
-
-    Steps:
-    1. Pass an invalid timeout value.
-    2. Assert that a `ValueError` is raised.
-    """
-    with pytest.raises(ValueError):
-        src.init_generic_requests(-1)
-
-def test_watcher_configuration_default():
-    """
-    Verifies the default value for file path of `WatcherConfiguration`.
-
-    Steps:
-    1. Instantiate `WatcherConfiguration`.
-    2. Assert that `log_file_path` equals files/app.log.
-    """
-    config = src.WatcherConfiguration()
-    assert config.log_file_path == "files/app.log"
-
-def test_init_generic_watcher_changes_file_path():
-    """
-    Validates whether `init_generic_watcher` correctly updates the file path.
-
-    Steps:
-    1. Set a new file path.
-    2. Call `init_generic_watcher` with the new value.
-    3. Assert that the `log_file_path` in `watcher_settings` is updated.
-    """
-    new_file_path = "test/app2.log"
-    src.init_generic_watcher(new_file_path)
-    assert src.watcher_settings.log_file_path == "test/app2.log"
+    assert "Connection error occurred" in loguru_caplog.getvalue()

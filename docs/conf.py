@@ -28,6 +28,7 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'loguru': ('https://loguru.readthedocs.io/en/stable/', None),
     'requests': ('https://requests.readthedocs.io/en/latest/', None),
+    "pydantic": ("https://docs.pydantic.dev/latest/", None),
     }
 
 autodoc_member_order = 'bysource'
