@@ -12,23 +12,7 @@ class GenReqConfiguration(BaseModel):
     Configuration settings for generic_requests
     """
 
-    request_timeout: PositiveInt = 10
-
-
-gen_req_settings = GenReqConfiguration()
-
-
-def init_generic_requests(request_timeout: int) -> None:
-    """
-    Locale initialization for the transfer of default values 
-    for the generic request functions 
-
-    Args:
-        request_timeout (int): Time until a request is canceled 
-    """
-    if request_timeout <= 0:
-        raise ValueError("request_timeout must be greater than 0")
-    gen_req_settings.request_timeout = request_timeout
+    request_timeout: PositiveInt
 
 
 async def generic_http_request(
