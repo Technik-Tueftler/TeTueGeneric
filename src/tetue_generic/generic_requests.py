@@ -59,11 +59,9 @@ async def generic_http_request(
         return requests.get(url, headers=header, timeout=config.gen_req.request_timeout)
     except requests.exceptions.HTTPError as err:
         logger.error(f"HTTP error occurred: {err}")
-        # print(f"HTTP error occurred: {err}", file=sys.stderr)
         return None
     except requests.exceptions.ConnectTimeout as err:
         logger.error(f"Connection timeout error occurred: {err}")
-        # print(f"Connection timeout error occurred: {err}", file=sys.stderr)
         return None
     except requests.exceptions.ConnectionError as err:
         logger.error(f"Connection error occurred: {err}")

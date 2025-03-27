@@ -20,9 +20,7 @@ def fct_capture_logs():
         list: An empty list that can be used to capture log messages.
     """
     output = []
-    # handler_id = logger.add(output.append, level="TRACE")
     yield output
-    # logger.remove(handler_id)
 
 
 @pytest.fixture(name="temp_log_file")
@@ -42,7 +40,7 @@ def fct_temp_log_file():
         yield Path(f.name)
 
 
-def test_init_logging(capture_logs, temp_log_file):
+def test_init_logging(temp_log_file):
     """
     Tests the initialization of the logging system.
 
@@ -73,30 +71,9 @@ def test_init_logging(capture_logs, temp_log_file):
         src.WatcherConfiguration(log_level="TRACE", log_file_path=temp_log_file)
     )
 
-    # # Füge einen temporären Handler hinzu, um die Logs zu erfassen
-    # temp_handler_id = src.logger.add(
-    #     lambda msg: capture_logs.append(msg.record["message"]), level="TRACE"
-    # )
-
-    # # Generiere die Lognachrichten
-    # src.logger.debug("Test DEBUG message")
-    # src.logger.info("Test INFO message")
-    # src.logger.extdebug("Test EXTDEBUG message")
-
-    # # Entferne den temporären Handler
-    # src.logger.remove(temp_handler_id)
-
-    # print(capture_logs)
-    # print(src.logger.level)
-
     # Procedure 2: Check the custom log level configuration
     assert src.logger.level("EXTDEBUG").no == 9
     assert src.logger.level("EXTDEBUG").color == "<bold><yellow>"
-
-    # # Überprüfe die erfassten Lognachrichten
-    # assert "Test DEBUG message" in capture_logs
-    # assert "Test INFO message" in capture_logs
-    # assert "Test EXTDEBUG message" in capture_logs
 
     # Procedure 3: Check if the log file was created
     assert os.path.exists(temp_log_file), "Log file was not created"
