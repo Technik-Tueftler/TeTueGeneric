@@ -3,6 +3,7 @@
 
 import sys
 from functools import partialmethod
+from pathlib import Path
 from loguru import logger
 from pydantic import BaseModel
 
@@ -16,11 +17,11 @@ class WatcherConfiguration(BaseModel):
 
     Attributes:
         log_level (str): The logging level to be used (e.g., "DEBUG", "INFO", "WARNING").
-        log_file_path (str): The file path where log files will be stored.
+        log_file_path (str | pathlib.Path): The file path where log files will be stored.
     """
 
     log_level: str
-    log_file_path: str
+    log_file_path: str | Path
 
 
 def init_logging(conf_watcher: WatcherConfiguration) -> None:
@@ -28,7 +29,8 @@ def init_logging(conf_watcher: WatcherConfiguration) -> None:
     Initializes logging configuration for the application..  
 
     Args:
-        conf_watcher (watcher.WatcherConfiguration): A configuration object containing logging settings.
+        conf_watcher (watcher.WatcherConfiguration): A configuration object containing 
+        logging settings.
 
     Returns:
         None

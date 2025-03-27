@@ -1,7 +1,6 @@
 """Implement generic request function with own logging and return functionality"""
 
 from __future__ import annotations
-import sys
 import requests
 from pydantic import BaseModel, PositiveInt
 from .watcher import logger
@@ -38,10 +37,11 @@ async def generic_http_request(
     Args:
         url (str): The URL to send the GET request to.
         header (dict): A dictionary of HTTP headers to include in the request.
-        config (pydantic.BaseModel): Configuration object containing request settings, including timeout (config.gen_req.request_timeout).
+        config (pydantic.BaseModel): Configuration object containing request settings, 
 
     Returns:
-        requests.Response | None: The response object if the request is successful, or None if an exception occurs.
+        requests.Response | None: The response object if the request is successful, or 
+        None if an exception occurs.
 
     Raises:
         No exceptions are raised; they are caught and logged instead.
