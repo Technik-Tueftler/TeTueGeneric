@@ -32,3 +32,16 @@ the necessary packages.
     .. code-block:: bash
 
         pip install -r requirements.txt
+
+5. Update project information
+    Update the project information in the **docs/conf.py** file. You can change project
+    name, author, and other information.
+
+6. Update repository information
+    Update the project information in the **src/__init__.oy** file. You can change repository
+    name and version. This is also the place where youu incement the version number if you
+    make changes to the code and release patches, bug fixes or new features.
+
+7. Update README.md
+    Update the **README.md** file with the project information. You can add a description of the
+    project, installation instructions, and usage information. Or only a link to the documentation.
