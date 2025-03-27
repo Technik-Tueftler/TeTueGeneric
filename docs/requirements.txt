@@ -1,7 +1,6 @@
-ghp-import
-sphinx
-pydata-sphinx-theme
-sphinx-copybutton
-sphinx-toolbox
-myst-parser
-sphinx-mermaid
+Sphinx==8.1.3
+pydata-sphinx-theme==0.16.0
+sphinx-copybutton==0.5.2
+sphinx-toolbox==3.8.1
+myst-parser==4.0.0
+sphinx-mermaid==0.0.8
