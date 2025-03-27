@@ -11,7 +11,13 @@ Requirements
 
 Customizing the documentation
 -----------------------------
-1. Placeholder 1
+1. Install necessary packages
+    Install the necessary packages from the requirements.txt file in **docs/**
+    for generating the documentation.
+
+    .. code-block:: bash
+
+        pip install -r docs/requirements.txt
 
 2. Change to the /docs directory
     Your path in the terminal looks like: **(.venv) D:\git\YouApp\src**
