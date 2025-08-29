@@ -1,36 +1,27 @@
-"""All functions and features for logging the app
-"""
+"""All functions and features for logging the app"""
 
 import sys
-from functools import partialmethod
-from pathlib import Path
+import environ
 from loguru import logger
-from pydantic import BaseModel
 
 
-class WatcherConfiguration(BaseModel):
+@environ.config(prefix="WATCHER")
+class WatcherConfiguration:
     """
     Configuration model for the watcher component.
-
-    This class inherits from Pydantic's BaseModel and defines the configuration
-    parameters for logging in the watcher component.
-
-    Attributes:
-        log_level (str): The logging level to be used (e.g., "DEBUG", "INFO", "WARNING").
-        log_file_path (str | pathlib.Path): The file path where log files will be stored.
     """
 
-    log_level: str
-    log_file_path: str | Path
+    log_file_path: str = environ.var("files/app.log")
+    log_level: str = environ.var(logger.level("INFO").name)
 
 
 def init_logging(conf_watcher: WatcherConfiguration) -> None:
     """
-    Initializes logging configuration for the application..  
+    Initializes logging configuration for the application..
 
     Args:
-        conf_watcher (watcher.WatcherConfiguration): A configuration object containing 
-        logging settings.
+        conf_watcher (watcher.WatcherConfiguration): A configuration object containing logging
+            settings.
 
     Returns:
         None
@@ -42,5 +33,7 @@ def init_logging(conf_watcher: WatcherConfiguration) -> None:
 
     """
     logger.remove()
-    logger.add(conf_watcher.log_file_path, rotation="100 MB", level=conf_watcher.log_level)
+    logger.add(
+        conf_watcher.log_file_path, rotation="100 MB", level=conf_watcher.log_level
+    )
     logger.add(sys.stdout, colorize=True, level=conf_watcher.log_level)
