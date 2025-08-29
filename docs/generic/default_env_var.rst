@@ -6,7 +6,7 @@ settings are specified in the main application, these are replaced with the foll
 ==============================  =====  ============= ==================================== =============
 Name                            Type   Value         Explanation                          Location 
 ==============================  =====  ============= ==================================== =============
-TT_GEN_REQ__REQUEST_TIMEOUT     int    30            Time to about requests               generic requests
-TT_WATCHER__LOG_FILE_PATH       str    files/app.log Path for logging file                watcher
-TT_WATCHER__log_level           str    INFO          Default log level                    watcher
+TT_GEN_REQ_REQUEST_TIMEOUT      int    30            Time to about requests               generic requests
+TT_WATCHER_LOG_FILE_PATH        str    files/app.log Path for logging file                watcher
+TT_WATCHER_log_level            str    INFO          Default log level                    watcher
 ==============================  =====  ============= ==================================== =============
