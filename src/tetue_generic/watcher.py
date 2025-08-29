@@ -43,7 +43,5 @@ def init_logging(conf_watcher: WatcherConfiguration) -> None:
 
     """
     logger.remove()
-    logger.level("EXTDEBUG", no=9, color="<bold><yellow>")
-    logger.__class__.extdebug = partialmethod(logger.__class__.log, "EXTDEBUG")
     logger.add(conf_watcher.log_file_path, rotation="500 MB", level=conf_watcher.log_level)
     logger.add(sys.stdout, colorize=True, level=conf_watcher.log_level)

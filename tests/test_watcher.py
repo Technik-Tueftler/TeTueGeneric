@@ -53,12 +53,9 @@ def test_init_logging(temp_log_file):
     Procedure:
         1. Initializes the logging system with a WatcherConfiguration set to TRACE level
            and a specified temporary log file path.
-        2. Checks if the custom 'EXTDEBUG' log level is correctly set up.
-        3. Verifies that the log file has been created.
+        2. Verifies that the log file has been created.
 
     Assertions:
-        - Checks if the 'EXTDEBUG' level is set to the correct numeric value (9).
-        - Ensures that the 'EXTDEBUG' level has the correct color formatting ("<bold><yellow>").
         - Confirms that the specified log file has been created.
 
     Notes:
@@ -71,11 +68,7 @@ def test_init_logging(temp_log_file):
         src.WatcherConfiguration(log_level="TRACE", log_file_path=temp_log_file)
     )
 
-    # Procedure 2: Check the custom log level configuration
-    assert src.logger.level("EXTDEBUG").no == 9
-    assert src.logger.level("EXTDEBUG").color == "<bold><yellow>"
-
-    # Procedure 3: Check if the log file was created
+    # Procedure 2: Check if the log file was created
     assert os.path.exists(temp_log_file), "Log file was not created"
 
 
@@ -88,8 +81,8 @@ def test_console_logging(capture_logs):
     actually logged based on the configured log level.
 
     Procedure:
-        1. Adds a temporary handler to capture log messages at the EXTDEBUG level.
-        2. Generates test log messages at TRACE, DEBUG, INFO, and EXTDEBUG levels.
+        1. Adds a temporary handler to capture log messages at the DEBUG level.
+        2. Generates test log messages at TRACE, DEBUG and INFO levels.
         3. Removes the temporary handler.
         4. Checks the captured log messages to ensure correct filtering.
 
@@ -97,7 +90,6 @@ def test_console_logging(capture_logs):
         - Verifies that the TRACE message is not captured (as it's below the set level).
         - Verifies that the DEBUG message is captured.
         - Verifies that the INFO message is captured.
-        - Verifies that the EXTDEBUG message is captured.
 
     Notes:
         - The test assumes that the logger is configured with a minimum level of DEBUG or lower.
@@ -107,14 +99,13 @@ def test_console_logging(capture_logs):
     """
     # Procedure 1: Add a temporary handler to capture log messages
     temp_handler_id = src.logger.add(
-        lambda msg: capture_logs.append(msg.record["message"]), level="EXTDEBUG"
+        lambda msg: capture_logs.append(msg.record["message"]), level="DEBUG"
     )
 
     # Procedure 2: Write log messages
     src.logger.trace("Test TRACE message")
     src.logger.debug("Test DEBUG message")
     src.logger.info("Test INFO message")
-    src.logger.extdebug("Test EXTDEBUG message")
 
     # Procedure 3: Remove the temporary handler
     src.logger.remove(temp_handler_id)
@@ -123,7 +114,6 @@ def test_console_logging(capture_logs):
     assert not "Test TRACE message" in capture_logs
     assert "Test DEBUG message" in capture_logs
     assert "Test INFO message" in capture_logs
-    assert "Test EXTDEBUG message" in capture_logs
 
 
 def test_file_logging(temp_log_file):
@@ -140,32 +130,29 @@ def test_file_logging(temp_log_file):
     Procedure:
         1. Initializes a `WatcherConfiguration` with a specific log level and file path.
         2. Adds the log file as a target for the logger.
-        3. Writes test log messages at the DEBUG, INFO and EXTDEBUG levels.
+        3. Writes test log messages at the TRACE, DEBUGm and INFO levels.
         4. Opens the log file and checks if all test messages are present in the content.
 
     Assertions:
+        - Verifies that the message "Test TRACE message" is not contained in the file.
         - Verifies that the message "Test DEBUG message" is contained in the file.
         - Verifies that the message "Test INFO message" is contained in the file.
-        - Verifies that the message "Test EXTDEBUG message" is contained in the file.
-
-    Notes:
-        - The test uses the 'extdebug' level, which must be specially configured.
-        Therefore, the first test must always be the test_init_logging
-
     """
     # Procedure 1: Specify the logging configuration
-    config = src.WatcherConfiguration(log_level="TRACE", log_file_path=temp_log_file)
+    config = src.WatcherConfiguration(log_level="DEBUG", log_file_path=temp_log_file)
+
     # Procedure 2: Initialize the logging configuration
     _ = src.logger.add(config.log_file_path, rotation="500 MB", level=config.log_level)
+
     # procedure 3: Write log messages
+    src.logger.trace("Test TRACE message")
     src.logger.debug("Test DEBUG message")
     src.logger.info("Test INFO message")
-    src.logger.extdebug("Test EXTDEBUG message")
 
     # Procedure 4: Check the log file content
     with open(temp_log_file, "r", encoding="utf-8") as log_file:
         log_content = log_file.read()
         print(f"content: {log_content}")
+        assert not "Test TRACE message" in log_content
         assert "Test DEBUG message" in log_content
         assert "Test INFO message" in log_content
-        assert "Test EXTDEBUG message" in log_content
