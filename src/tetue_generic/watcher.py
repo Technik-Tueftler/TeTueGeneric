@@ -37,11 +37,10 @@ def init_logging(conf_watcher: WatcherConfiguration) -> None:
 
     Note:
         - This function modifies the global `logger` object from Loguru.
-        - The 'EXTDEBUG' level is set to 9, between DEBUG (10) and INFO (20).
-        - Log files are rotated when they reach 500 MB in size.
+        - Log files are rotated when they reach 100 MB in size.
         - Console output is colorized for better readability.
 
     """
     logger.remove()
-    logger.add(conf_watcher.log_file_path, rotation="500 MB", level=conf_watcher.log_level)
+    logger.add(conf_watcher.log_file_path, rotation="100 MB", level=conf_watcher.log_level)
     logger.add(sys.stdout, colorize=True, level=conf_watcher.log_level)
