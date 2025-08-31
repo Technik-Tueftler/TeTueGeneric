@@ -8,14 +8,6 @@ TeTue Generic
 
 .. toctree::
    :maxdepth: 2
-   :caption: User Guide
-
-   module
-   configuration
-
-
-.. toctree::
-   :maxdepth: 2
    :caption: Contents
 
    main_schedule
@@ -24,4 +16,9 @@ TeTue Generic
    watcher
    workflow
 
-   
+.. toctree::
+   :maxdepth: 2
+   :caption: User Guide
+
+   module
+   configuration   

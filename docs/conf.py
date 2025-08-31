@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath("../"))
 from src import __version__, __repository__
 
 project = 'TeTueGeneric'
-copyright = '2024, Technik Tueftler'
+copyright = '2025, Technik Tueftler'
 author = 'Technik Tueftler'
 release = __version__
 
@@ -63,7 +63,7 @@ html_theme_options = {
         },
         {
             "name": "Twitch",
-            "url": "https://www.twitch.tv/technik_tueftlers",
+            "url": "https://www.twitch.tv/technik_tueftler",
             "icon": "fa-brands fa-twitch",
             "type": "fontawesome",
         },

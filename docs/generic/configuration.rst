@@ -6,7 +6,7 @@ The following illustration shows the structure of the project:
 
 .. code-block:: rst
 
-   Application
+   Application 
     ├── src
     │   ├── __init__.py
     │   ├── db.py
@@ -19,72 +19,55 @@ The following illustration shows the structure of the project:
 
 Generic
 -------
-The watcher module with new functions should be added to the generic folder.
-If a configuration is required for the new generic parts, the following must be created.
+Create a new module in the generic folder, e.g. ``gentester.py``. If a configuration is 
+required for the new generic parts, the following must be created.
 
-1. Create a configuration class in *watcher.py*
-
-.. code-block:: python
-
-    from pydantic import BaseModel, FilePath
-
-    class WatcherConfiguration(BaseModel):
-        log_level: str = ""
-        log_file_path: FilePath = None
-
-2. Declaring a local configuration and the initialization function in *watcher.py*
+1. Create a configuration class in ``gentester.py``, customize delimiter and change the default value ``test_var``
 
 .. code-block:: python
 
-    watcher_settings = WatcherConfiguration()
+    import environ
 
-    def init_generic_watcher(log_file_path: FilePath) -> None:
-        watcher_settings.log_file_path = log_file_path
+    @environ.config(prefix="TEST_CONF")
+    class GenTestConfiguration:
+        """
+        Configuration settings for test example.
+        """
 
-3. Add new configuration variables to *default.env* with nested delimiter
+        request_timeout = environ.var(
+            "test_var", help="This variable is just for testing purposes"
+        )
 
+
+2. Import the new configuration class in ``src/configuration.py``
+
+.. code-block:: python
+
+    from .tetue_generic.gentester import GenTestConfiguration
+
+3. Add the new configuration variables to ``Configuration`` in ``src/configuration.py``
+
+.. code-block:: python
+
+    @environ.config(prefix="TT")
+    class Configuration:
+        """
+        Configuration class for the entire application, grouping all sub-configurations.
+        """
+        gen_req = environ.group(GenReqConfiguration)
+        watcher = environ.group(WatcherConfiguration)
+        gentester = environ.group(GenTestConfiguration)
+
+4. Add new configuration variables to *.env* with nested delimiter
 .. code-block:: rst
 
-    TT_WATCHER__LOG_FILE_PATH=files/app.log
-    TT_WATCHER__log_level=INFO
-
-4. Add new init function in *watcher.py* to *set_configurations()* in *configuration.py* in **src**
-
-.. code-block:: python
-
-    def set_configurations(configuration: Configuration) -> None:
-        init_generic_watcher(configuration.watcher.log_file_path)
+    TT_TEST_CONF_TEST_VAR=example_value
 
 Application
 -----------
 
-The db module with new functions should be added to the app folder.
-If a configuration is required for the new db parts, the following must be created.
-
-1. Create a configuration class in *db.py*
-
-.. code-block:: python
-
-    from pydantic import BaseModel, IPvAnyAddress
-
-    class DbConfiguration(BaseModel):
-        """
-        Configuration settings for database handler
-        """
-        ip: IPvAnyAddress
-        user: str
-        active: bool = True
-
-3. Add new configuration variables to *.env* with nested delimiter
-
-.. code-block:: rst
-
-    TT_DB__IP=192.168.0.1
-    TT_DB__USER=TeTue
-
-Here it's different to the generic parts, as these are application-specific. Therefore, the 
-variables that are optional (e.g. active) should be assigned a default value in DbConfiguration. 
-All required (e.g. ip and user) variables from user must be specified in the *.env*.
+For the application, the configuration is created in the same way as for the generic part. For example, 
+if a database configuration is required (``for src/db.py``), proceed the same ways as above.
 
 Primary
 -----------
@@ -94,11 +77,30 @@ to a module (user and name), these are specified and verified directly in the co
 
 .. code-block:: python
 
-    class Configuration(BaseSettings):
-        model_config = SettingsConfigDict(env_prefix='TT_', env_nested_delimiter='__')
+    @environ.config(prefix="TT")
+    class Configuration:
+        """
+        Configuration class for the entire application, grouping all sub-configurations.
+        """
+        test_value = environ.var("value", help="This is a value.")
+        gen_req = environ.group(GenReqConfiguration)
+        watcher = environ.group(WatcherConfiguration)
+        gentester = environ.group(GenTestConfiguration)
 
-        user: str
-        name: str = "TeTue"
-        gen_req: GenReqConfiguration
-        watcher: WatcherConfiguration
-        db: DbConfiguration
+The new variable is then added to *.env* as follows:
+
+.. code-block:: rst
+
+    TT_TEST_VALUE=example_value
+
+.. note::
+
+   It is not necessary to write all the letters in uppercase. The library automatically converts it.
+   However, it is recommended to use uppercase letters for better readability.
+
+Validation
+----------
+It is possible to validate configuration variables. The library ``environ`` supports this natively.
+For further information, refer to official documentation of `environ`_.
+
+.. _environ: https://environ-config.readthedocs.io/en/stable/index.html

@@ -38,4 +38,4 @@ the necessary settings must first be created in GitHub:
     The documentation is generated using the ``docs/`` folder as the source.
     Therefore, all files must be located in this folder and the ``conf.py`` file
     must also be adapted accordingly. Also this workflow is only working 
-    correctly if all settings in Repository > Settings > Pages are set as shown in the image above.
+    correctly if all settings in ``Repository > Settings > Pages`` are set as shown in the image above.
