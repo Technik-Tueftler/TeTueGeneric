@@ -2,31 +2,23 @@
 
 from __future__ import annotations
 import requests
-from pydantic import BaseModel, PositiveInt
+import environ
 from .watcher import logger
 
 
-class GenReqConfiguration(BaseModel):
+@environ.config(prefix="GEN_REQ")
+class GenReqConfiguration:
     """
     Configuration settings for generic HTTP requests.
-
-    This class inherits from Pydantic's BaseModel and defines the configuration
-    parameters for making generic HTTP requests.
-
-    Attributes:
-        request_timeout (PositiveInt): The timeout duration for HTTP requests in seconds.
-                                       Must be a positive integer.
-
-    Note:
-        The use of PositiveInt ensures that the timeout value is always a positive integer,
-        providing a safeguard against invalid timeout settings.
     """
 
-    request_timeout: PositiveInt
+    request_timeout = environ.var(
+        "30", converter=int, help="Timeout for HTTP requests in seconds"
+    )
 
 
 async def generic_http_request(
-    url: str, header: dict, config: BaseModel
+    url: str, header: dict, timeout: int
 ) -> requests.Response | None:
     """
     Performs an asynchronous HTTP GET request and handles potential exceptions.
@@ -37,10 +29,10 @@ async def generic_http_request(
     Args:
         url (str): The URL to send the GET request to.
         header (dict): A dictionary of HTTP headers to include in the request.
-        config (pydantic.BaseModel): Configuration object containing request settings, 
+        timeout (int): The timeout duration for the request in seconds.
 
     Returns:
-        requests.Response | None: The response object if the request is successful, or 
+        requests.Response | None: The response object if the request is successful, or
         None if an exception occurs.
 
     Raises:
@@ -56,7 +48,7 @@ async def generic_http_request(
         a configured Loguru logger instance.
     """
     try:
-        return requests.get(url, headers=header, timeout=config.gen_req.request_timeout)
+        return requests.get(url, headers=header, timeout=timeout)
     except requests.exceptions.HTTPError as err:
         logger.error(f"HTTP error occurred: {err}")
         return None

@@ -11,7 +11,7 @@ Note:
 import os
 from pathlib import Path
 
-__gen_version__ = "v0.3.1"
+__gen_version__ = "v0.4.0"
 
 cwd = Path.cwd()
 file_path = os.path.join(cwd, "files")

@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath("../"))
 from src import __version__, __repository__
 
 project = 'TeTueGeneric'
-copyright = '2024, Technik Tueftler'
+copyright = '2025, Technik Tueftler'
 author = 'Technik Tueftler'
 release = __version__
 
@@ -28,7 +28,6 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'loguru': ('https://loguru.readthedocs.io/en/stable/', None),
     'requests': ('https://requests.readthedocs.io/en/latest/', None),
-    "pydantic": ("https://docs.pydantic.dev/latest/", None),
     }
 
 autodoc_member_order = 'bysource'
@@ -63,7 +62,7 @@ html_theme_options = {
         },
         {
             "name": "Twitch",
-            "url": "https://www.twitch.tv/technik_tueftlers",
+            "url": "https://www.twitch.tv/technik_tueftler",
             "icon": "fa-brands fa-twitch",
             "type": "fontawesome",
         },

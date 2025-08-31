@@ -1,9 +1,8 @@
 """
 Load environment variables and validation of project configurations from user
 """
+import environ
 from dotenv import load_dotenv
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
 from .tetue_generic.generic_requests import GenReqConfiguration
 from .tetue_generic.watcher import WatcherConfiguration
 
@@ -11,14 +10,10 @@ load_dotenv("default.env")
 load_dotenv("files/.env", override=True)
 
 
-class Configuration(BaseSettings):
+@environ.config(prefix="TT")
+class Configuration:
     """
-    Configuration class to merge all settings for the application and validate via pydantic
-
-    Args:
-        BaseSettings (BaseSettings): Base class for settings from environment variables.
+    Configuration class for the entire application, grouping all sub-configurations.
     """
-    model_config = SettingsConfigDict(env_prefix='TT_', env_nested_delimiter='__')
-
-    gen_req: GenReqConfiguration
-    watcher: WatcherConfiguration
+    gen_req = environ.group(GenReqConfiguration)
+    watcher = environ.group(WatcherConfiguration)

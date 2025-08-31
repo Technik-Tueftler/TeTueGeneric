@@ -9,7 +9,7 @@ def main() -> None:
     """
     Scheduling function for regular call.
     """
-    config = src.Configuration()
+    config = src.environ.to_config(src.Configuration)
     src.init_logging(config.watcher)
     src.logger.info(f"Start application in version: {src.__version__}")
 

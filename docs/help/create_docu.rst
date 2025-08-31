@@ -1,13 +1,14 @@
 Create Documentation
 ==========================
-This is a guide to create documentation for the project using Sphinx in VS Code. The following
-steps will help you with the correct commands and workdflows in the template repository.
+This is a guide to create documentation for the project using Sphinx in VS Code. Here you can 
+find the documentation for `reStructuredText`_. The following steps will help you with the 
+correct commands and workdflows in the template repository. 
 
 Requirements
 ------------
 1. The repository is ready and all requirements are installed as explained here: :doc:`Start with repository <start_w_repo>`.
 
-2. For simple local testing, I recommend installing an extension in VS Code. The extension is called **LiveServer** and can be found and installed directly in VS Code: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer.
+2. For simple local testing, I recommend installing an extension in VS Code. The extension is called **LiveServer** and can be found and installed directly in VS Code: `VS Code marketplace`_.
 
 Customizing the documentation
 -----------------------------
@@ -47,3 +48,6 @@ Customizing the documentation
     .. image:: ../images/help_open_live_server.png
         :width: 400
         :alt: Setting shows start with LiveServer
+
+.. _reStructuredText: https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
+.. _VS Code marketplace: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer
