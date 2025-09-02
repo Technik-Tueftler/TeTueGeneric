@@ -14,3 +14,4 @@ from .tetue_generic.watcher import *
 __version__ = __gen_version__
 __repository__ = "https://github.com/Technik-Tueftler/TeTueGeneric"
 MODE_DEVELOP = True
+TEST = False
